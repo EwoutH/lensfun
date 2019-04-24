@@ -16,17 +16,38 @@ script:
 
 jobs:
   include:
-    - stage: build
+## Builds with only one feature enables
+    - stage: "Basic builds"
       name: "Linux GCC"
-      options: "-DCMAKE_BUILD_TYPE=Release -DBUILD_FOR_SSE2"
-    - name: "Linux GCC static"
-      cmake_options: "-DCMAKE_BUILD_TYPE=Release -DBUILD_FOR_SSE2 -DBUILD_STATIC=on"
     - name: "Linux Clang"
       compiler: clang
-      cmake_options: "-DCMAKE_BUILD_TYPE=Release -DBUILD_FOR_SSE2"
     - name: "macOS GCC"
       os: osx
-      options: "-DCMAKE_BUILD_TYPE=Release -DBUILD_FOR_SSE2"
+
+## Builds with only one feature enables
+    - stage: "Partial Linux GCC builds"
+      name: "Release"
+      options: "-DCMAKE_BUILD_TYPE=Release"
+    - name: "Static"
+      options: "-DBUILD_STATIC=on"
+    - name: "Lenstool"
+      options: "-DBUILD_LENSTOOL=on"
+    - name: "Doc"
+      options: "-DBUILD_DOC=on"
+
+
+## Builds with all features enabled
+    - stage: "Full builds"
+      name: "Linux GCC"
+      options: "-DCMAKE_BUILD_TYPE=Release -DBUILD_LENSTOOL=on -DBUILD_DOC=on"
+    - name: "Linux GCC static"
+      cmake_options: "-DCMAKE_BUILD_TYPE=Release -DBUILD_LENSTOOL=on -DBUILD_DOC=on -DBUILD_STATIC=on"
+    - name: "Linux Clang"
+      compiler: clang
+      cmake_options: "-DCMAKE_BUILD_TYPE=Release -DBUILD_LENSTOOL=on -DBUILD_DOC=on"
+#    - name: "macOS GCC"
+#      os: osx
+#      options: "-DCMAKE_BUILD_TYPE=Release -DBUILD_LENSTOOL=on -DBUILD_DOC=on"
     - name: "Linux GCC doc"
       options: "-DBUILD_DOC=on"
 
