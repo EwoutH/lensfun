@@ -13,7 +13,7 @@ matrix:
 
 before_script:
  - mkdir build && cd build
- - cmake .. $cmake_options
+ - cmake .. $(cmake_options)
 
 script:
  - make
