@@ -3,18 +3,37 @@ dist: xenial
 
 addons:
   apt:
-    packages:
-     - cmake
+    packages: cmake
+  homebrew:
+    packages: cmake
+
+before_script:
+ - mkdir build && cd build
+ - cmake .. $cmake_options
 
 script:
- - mkdir build && cd build
- - cmake ..
  - make
 
 jobs:
   include:
-    - name: "Linux GCC"
+    - stage: build
+      name: "Linux GCC build"
+      options: "-DCMAKE_BUILD_TYPE=Release -DBUILD_FOR_SSE2"
+    - name: "Linux GCC build static"
+      cmake_options: "-DCMAKE_BUILD_TYPE=Release -DBUILD_FOR_SSE2 -DBUILD_STATIC=on"
     - name: "Linux Clang"
       compiler: clang
+      cmake_options: "-DCMAKE_BUILD_TYPE=Release -DBUILD_FOR_SSE2"
     - name: "macOS GCC"
       os: osx
+      options: "-DCMAKE_BUILD_TYPE=Release -DBUILD_FOR_SSE2"
+    - name: "Linux GCC build doc"
+      options: "-DBUILD_DOC=on"
+
+    - stage: test
+    - stage: build
+      name: "Linux GCC test"
+      options: "-DCMAKE_BUILD_TYPE=Release -DBUILD_FOR_SSE2 -DBUILD_TESTS=on"
+      script:
+       - make
+       - make test
