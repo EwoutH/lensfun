@@ -5,7 +5,7 @@ addons:
   apt:
     packages: cmake
   homebrew:
-    packages: cmake
+    packages: cmake glib
 
 before_script:
  - mkdir build && cd build
@@ -17,9 +17,9 @@ script:
 jobs:
   include:
     - stage: build
-      name: "Linux GCC build"
+      name: "Linux GCC"
       options: "-DCMAKE_BUILD_TYPE=Release -DBUILD_FOR_SSE2"
-    - name: "Linux GCC build static"
+    - name: "Linux GCC static"
       cmake_options: "-DCMAKE_BUILD_TYPE=Release -DBUILD_FOR_SSE2 -DBUILD_STATIC=on"
     - name: "Linux Clang"
       compiler: clang
@@ -27,12 +27,11 @@ jobs:
     - name: "macOS GCC"
       os: osx
       options: "-DCMAKE_BUILD_TYPE=Release -DBUILD_FOR_SSE2"
-    - name: "Linux GCC build doc"
+    - name: "Linux GCC doc"
       options: "-DBUILD_DOC=on"
 
     - stage: test
-    - stage: build
-      name: "Linux GCC test"
+      name: "Linux GCC"
       options: "-DCMAKE_BUILD_TYPE=Release -DBUILD_FOR_SSE2 -DBUILD_TESTS=on"
       script:
        - make
