@@ -21,8 +21,8 @@ jobs:
       name: "Linux GCC"
     - name: "Linux Clang"
       compiler: clang
-    - name: "macOS GCC"
-      os: osx
+#    - name: "macOS GCC"
+#      os: osx
 
 ## Builds with only one feature enables
     - stage: "Partial Linux GCC builds"
