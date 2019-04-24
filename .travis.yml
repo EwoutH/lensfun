@@ -7,6 +7,10 @@ addons:
   homebrew:
     packages: cmake glib
 
+matrix:
+  allow_failures:
+  - os: osx
+
 before_script:
  - mkdir build && cd build
  - cmake .. $cmake_options
@@ -21,8 +25,8 @@ jobs:
       name: "Linux GCC"
     - name: "Linux Clang"
       compiler: clang
-#    - name: "macOS GCC"
-#      os: osx
+    - name: "macOS GCC"
+      os: osx
 
 ## Builds with only one feature enables
     - stage: "Partial Linux GCC builds"
@@ -45,9 +49,9 @@ jobs:
     - name: "Linux Clang"
       compiler: clang
       cmake_options: "-DCMAKE_BUILD_TYPE=Release -DBUILD_LENSTOOL=on -DBUILD_DOC=on"
-#    - name: "macOS GCC"
-#      os: osx
-#      options: "-DCMAKE_BUILD_TYPE=Release -DBUILD_LENSTOOL=on -DBUILD_DOC=on"
+    - name: "macOS GCC"
+      os: osx
+      options: "-DCMAKE_BUILD_TYPE=Release -DBUILD_LENSTOOL=on -DBUILD_DOC=on"
     - name: "Linux GCC doc"
       options: "-DBUILD_DOC=on"
 
